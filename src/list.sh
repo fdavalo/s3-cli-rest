@@ -4,4 +4,5 @@ export AWS_SECRET_ACCESS_KEY=$2
 BUCKET=$3
 FILE=$4
 export URL=$5
-sh s3SimpleUrl.sh get s3://${BUCKET}${FILE} | python3 xml2json.py | jq -r '.ListBucketResult.Contents[] | [.LastModified, .Size, .Key] | @tsv' | sort
+
+sh s3SimpleUrl.sh get s3://${BUCKET}${FILE} | python3 listbucketresult.py | jq -r '.ListBucketResult.Contents[] | [.LastModified, .Size, .Key] | @tsv' | awk '{print $1"\t"$2"\t\t/"$3;}' | sort
